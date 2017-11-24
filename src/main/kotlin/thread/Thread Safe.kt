@@ -12,7 +12,7 @@ import kotlin.system.measureNanoTime
  * coding is art not science
  */
 //非线程安全
-open class Counter : Runnable {
+private open class Counter : Runnable {
     protected open var count = 0
     override fun run() {
         for (i in 1..loopTimes) {
@@ -30,7 +30,7 @@ open class Counter : Runnable {
 }
 
 //非线程安全 volatile关键字不提供原子性
-open class CounterUnsafe : Counter() {
+private open class CounterUnsafe : Counter() {
     @Volatile
     override var count = 0
 
@@ -38,7 +38,7 @@ open class CounterUnsafe : Counter() {
 
 
 //线程安全1 synchronized关键字
-class CounterSafe1 : Counter() {
+private class CounterSafe1 : Counter() {
     override fun run() {
         synchronized(this) {
             for (i in 1..loopTimes) {
@@ -49,7 +49,7 @@ class CounterSafe1 : Counter() {
 }
 
 //线程安全2 synchronized性能损耗
-class CounterSafe2 : Counter() {
+private class CounterSafe2 : Counter() {
     @Synchronized
     override fun run() {
         for (i in 1..loopTimes) {
@@ -59,7 +59,7 @@ class CounterSafe2 : Counter() {
 }
 
 //线程安全3
-class CounterSafe3 : Counter() {
+private class CounterSafe3 : Counter() {
     private val lock = ReentrantLock()
     override fun run() {
         lock.lock()
@@ -75,7 +75,7 @@ class CounterSafe3 : Counter() {
 }
 
 //线程安全4 synchronized性能损耗
-class CounterSafe4 : Counter() {
+private class CounterSafe4 : Counter() {
     override fun run() {
         for (i in 1..loopTimes) {
             synchronized(this) {
@@ -86,7 +86,7 @@ class CounterSafe4 : Counter() {
 }
 
 //线程安全5 AtomicInteger提供原子操作
-class CounterSafe5 : Counter() {
+private class CounterSafe5 : Counter() {
     private val countAtomic = AtomicInteger()
     override fun run() {
         for (i in 1..loopTimes) {
@@ -108,7 +108,7 @@ fun main(args: Array<String>) {
 
 }
 
-fun runTask(counter: Counter) {
+private fun runTask(counter: Counter) {
     println("${counter::class.java.simpleName} test start...")
     val time = measureNanoTime {
         val threads = List(10) {

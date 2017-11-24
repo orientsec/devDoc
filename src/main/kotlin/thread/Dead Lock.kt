@@ -12,6 +12,7 @@ fun main(args: Array<String>) {
     when (args[0]) {
         "1" -> test1()
         "2" -> test2()
+        "3" -> test3()
     }
 }
 
@@ -45,6 +46,15 @@ internal class PrintThread(name: String) : Thread() {
     }
 }
 
+/**
+ * 线程死锁
+ */
+private fun test2() {
+    val lock1 = Object()
+    val lock2 = Object()
+    Thread(DeadLockA(lock1, lock2), "Thread -Dead lock A").start()
+    Thread(DeadLockB(lock1, lock2), "Thread -Dead lock A").start()
+}
 
 private class DeadLockA(private val lock1: Object, private val lock2: Object) : Runnable {
     override fun run() {
@@ -74,9 +84,37 @@ private class DeadLockB(private val lock1: Object, private val lock2: Object) : 
 
 }
 
-private fun test2() {
-    val lock1 = Object()
-    val lock2 = Object()
-    Thread(DeadLockA(lock1, lock2), "Thread -Dead lock A").start()
-    Thread(DeadLockB(lock1, lock2), "Thread -Dead lock A").start()
+
+/**
+ * notify和notifyAll的区别
+ */
+private fun test3() {
+    val threads = List(5) {
+        Thread(NotifyDemo()).apply { start() }
+    }
+    Thread.sleep(1000)
+    synchronized(lock) {
+        lock.notify()
+    }
+    Thread.sleep(3000)
+    threads.take(2).forEach { it.interrupt() }
+    Thread.sleep(3000)
+    synchronized(lock) {
+        lock.notifyAll()
+    }
+}
+
+private class NotifyDemo : Runnable {
+    override fun run() {
+        println("${Thread.currentThread().name} start...")
+        synchronized(lock) {
+            try {
+                lock.wait()
+            } catch (e: InterruptedException) {
+                println("${Thread.currentThread().name} interrupt...")
+            }
+        }
+        println("${Thread.currentThread().name} end...")
+    }
+
 }

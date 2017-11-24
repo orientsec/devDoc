@@ -12,7 +12,7 @@ package thread
  * 代工生产线
  */
 open class Workshop {
-    var price: String = ""
+    private var price: String = ""
     open fun make(brand: String) {
         if (brand == "宝马") {
             price = "100万"
@@ -26,20 +26,20 @@ open class Workshop {
     }
 }
 
-class WorkshopV2 : Workshop() {
+private class WorkshopV2 : Workshop() {
     @Synchronized
     override fun make(brand: String) {
         super.make(brand)
     }
 }
 
-class BmwFactory(private val workshop: Workshop) : Runnable {
+private class BmwFactory(private val workshop: Workshop) : Runnable {
     override fun run() {
         workshop.make("宝马")
     }
 }
 
-class BjFactory(private val workshop: Workshop) : Runnable {
+private class BjFactory(private val workshop: Workshop) : Runnable {
     override fun run() {
         workshop.make("宝骏")
     }
@@ -63,7 +63,7 @@ private fun test2() {
     Thread(BjFactory(workshop)).start()
 }
 
-class Tree {
+private class Tree {
     var sign = ""
 
     fun mark(sign: String) {
@@ -75,7 +75,7 @@ class Tree {
     }
 }
 
-open class Puppy(private val name: String, protected val tree: Tree) : Runnable {
+private open class Puppy(private val name: String, protected val tree: Tree) : Runnable {
     override fun run() {
         pin()
     }
@@ -103,7 +103,7 @@ private fun test3() {
 /**
  * 类锁
  */
-class PuppyV2(name: String, tree: Tree) : Puppy(name, tree) {
+private class PuppyV2(name: String, tree: Tree) : Puppy(name, tree) {
     override fun pin() {
         synchronized(Tree::class.java) {
             super.pin()
@@ -125,7 +125,7 @@ private fun test4() {
 /**
  * 共用对象锁
  */
-class PuppyV3(name: String, tree: Tree) : Puppy(name, tree) {
+private class PuppyV3(name: String, tree: Tree) : Puppy(name, tree) {
     override fun pin() {
         synchronized(tree) {
             super.pin()

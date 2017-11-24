@@ -15,13 +15,13 @@ import java.util.concurrent.atomic.AtomicInteger
 /**
  *线程实现的两种方式Thread和Runnable
  */
-class DemoThread : Thread() {
+private class DemoThread : Thread() {
     override fun run() {
         println("${javaClass.simpleName} run in thread:${currentThread().name}")
     }
 }
 
-class DemoRunnable : Runnable {
+private class DemoRunnable : Runnable {
     override fun run() {
         println("${javaClass.simpleName} run in thread:${Thread.currentThread().name}")
     }
@@ -37,7 +37,7 @@ class DemoRunnable : Runnable {
 /**
  * Runnable优点1：可以实现多继承
  */
-open class Dog {
+private open class Dog {
     fun eat() {
         for (x in 1..5) {
             println("I'm ${javaClass.simpleName}, and I have $x bones")
@@ -46,7 +46,7 @@ open class Dog {
     }
 }
 
-class Labrador : Dog(), Runnable {
+private class Labrador : Dog(), Runnable {
     override fun run() {
         eat()
     }
@@ -55,7 +55,7 @@ class Labrador : Dog(), Runnable {
 /**
  * Runnable优点2:多线程运行，实现资源共享
  */
-class BankCard1 : Thread() {
+private class BankCard1 : Thread() {
     private var balance = 100
     override fun run() {
         for (i in 1..3) {
@@ -66,7 +66,7 @@ class BankCard1 : Thread() {
     }
 }
 
-class BankCard2 : Runnable {
+private class BankCard2 : Runnable {
     private var balance = AtomicInteger(100)
     override fun run() {
         for (i in 1..3) {

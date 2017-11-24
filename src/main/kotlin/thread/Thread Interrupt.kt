@@ -15,7 +15,7 @@ package thread
 /**
  * 通过自定义标志位结束任务
  */
-class DemoRunnable2 : Runnable {
+private class DemoRunnable2 : Runnable {
     var running = true
     override fun run() {
         println("work start")
@@ -37,7 +37,7 @@ class DemoRunnable2 : Runnable {
 /**
  * 通过isInterrupted标志位结束任务
  */
-class DemoRunnable3 : Runnable {
+private class DemoRunnable3 : Runnable {
     override fun run() {
         println("work start")
         while (!Thread.currentThread().isInterrupted) {
@@ -54,7 +54,7 @@ class DemoRunnable3 : Runnable {
 /**
  * 通过InterruptedException结束任务
  */
-class DemoRunnable4 : Runnable {
+private class DemoRunnable4 : Runnable {
     override fun run() {
         try {
             while (true) {
@@ -82,7 +82,7 @@ class DemoRunnable4 : Runnable {
 /**
  * 不会打断
  */
-class DemoRunnable5 : Runnable {
+private class DemoRunnable5 : Runnable {
     override fun run() {
         while (true) {
             val time = System.currentTimeMillis()
