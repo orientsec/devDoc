@@ -6,6 +6,8 @@ package thread;
  * Time: 2017/11/24 18:15
  * Author: Fredric
  * coding is art not science
+ * <p>
+ * java对象锁和类锁
  */
 public class LockDemo {
     private static int count;
@@ -86,7 +88,9 @@ public class LockDemo {
         Runnable runnableC = new RunnableC();
         Runnable runnableD = new RunnableD();
 
-
+        /*
+          runnableA和runnableB线程运行时，使用lockDemo的对象锁，线程安全
+         */
         Thread threadA = new Thread(runnableA);
         Thread threadB = new Thread(runnableB);
         threadA.start();
@@ -97,6 +101,9 @@ public class LockDemo {
         count = 0;
         Thread.sleep(3000);
 
+        /*
+          runnableC和runnableD线程运行时，使用LockDemo的类锁，线程安全
+         */
         Thread threadC = new Thread(runnableC);
         Thread threadD = new Thread(runnableD);
         threadC.start();
@@ -107,7 +114,9 @@ public class LockDemo {
         count = 0;
         Thread.sleep(3000);
 
-
+        /*
+          runnableA2和runnableB2线程运行时，分别使用lockDemo和lockDemo2对象锁，非线程安全
+         */
         Thread threadA2 = new Thread(runnableA);
         Thread threadB2 = new Thread(runnableB2);
         threadA2.start();
@@ -118,6 +127,9 @@ public class LockDemo {
         count = 0;
         Thread.sleep(3000);
 
+        /*
+         * runnableA3和runnableC2线程运行时，分别使用lockDemo的对象锁和LockDemo锁，非线程安全
+         */
         Thread threadA3 = new Thread(runnableA);
         Thread threadC2 = new Thread(runnableC);
         threadA3.start();
