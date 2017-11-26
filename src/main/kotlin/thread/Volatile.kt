@@ -4,23 +4,25 @@ package thread
  * Volatile关键字保证可见性
  */
 private class Print : Runnable {
-    @Volatile
+    //@Volatile
     var i = 1
-    @Volatile
+    //@Volatile
     var ok = false
 
     override fun run() {
         while (!ok) {
             Thread.yield()
         }
-        println(i)
+        if (i == 1) println(i)
     }
 }
 
 fun main(args: Array<String>) {
-    val print = Print()
-    Thread(print).start()
-    print.ok = true
-    print.i = 10
+    for (i in 1..10000) {
+        val print = Print()
+        Thread(print).start()
+        print.i = 10
+        print.ok = true
+    }
 
 }
